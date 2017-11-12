@@ -1,0 +1,113 @@
+function calculateRate (type, weight) {
+    var rate;
+    switch(type) {
+    case 'stamped':
+	if (weight <= 1)
+	    rate = .49;
+	else if (weight <= 2)
+	    rate = .70;
+	else if (weight <= 3)
+	    rate = .91;
+	else if (weight<= 3.5)
+	    rate = 1.12;
+	else
+	    rate = "See Large Envelope (Flats) Prices";
+	break;
+    case 'metered':
+	if (weight <= 1)
+	    rate = .46;
+	else if (weight <= 2)
+	    rate = .67;
+	else if (weight <= 3)
+	    rate = .88;
+	else if (weight <= 3.5)
+	    rate = 1.09;
+	else 
+	    rate = "See Large Envelopes (Flats) Prices";
+	break;
+    case 'flats':
+	if (weight <= 1)
+	    rate = .98;
+	else if (weight <= 2)
+	    rate = 1.19;
+	else if (weight <= 3)
+	    rate = 1.40;
+	else if (weight <= 4)
+	    rate = 1.61;
+	else if (weight <= 5)
+	    rate = 1.82;
+	else if (weight <= 6)
+	    rate = 2.03;
+	else if (weight <= 7)
+	    rate = 2.24;
+	else if (weight <= 8)
+	    rate = 2.45;
+	else if (weight <= 9)
+	    rate = 2.66;
+	else if (weight <= 10)
+	    rate = 2.87;
+	else if (weight <= 11)
+	    rate = 3.08;
+	else if (weight <= 12)
+	    rate = 3.29;
+	else if (weight <= 13)
+	    rate = 3.50;
+	else
+	    rate = "Unavailable";
+	break;
+    case 'parcels':
+	if (weight <= 4)
+	    rate = 3.00;
+	else if (weight <= 5)
+	    rate = 3.16;
+	else if (weight <= 6)
+	    rate = 3.32;
+	else if (weight <= 7)
+	    rate = 3.48;
+	else if (weight <= 8)
+	    rate = 3.64;
+	else if (weight <= 9)
+	    rate = 3.80;
+	else if (weight <= 10)
+	    rate = 3.96;
+	else if (weight <= 11)
+	    rate = 4.19;
+	else if (weight <= 12)
+	    rate = 4.36;
+	else if (weight <= 13)
+	    rate = 4.53;
+	else
+	    rate = "Unavailable";
+	break;
+    default:
+	rate = "Unavailable";
+    }
+    return rate;
+}
+
+
+
+const express = require('express');
+const app = express();
+var fs = require('fs');
+
+app.set('view engine', 'ejs');
+
+app.use(express.static('prove9'));
+
+app.get('/', (req, res) => {
+	res.sendFile('main.html', {root: __dirname });
+    });
+
+app.get('/main', (req, res) => {
+	res.render('main');
+    });
+
+app.get('/', function(req, res) {
+	var type = req.query['type'];
+	var weight = req.query['weight'];
+	var rate = calculateRate(type, weight);
+	//	res.send('Rate: ' + rate);
+	res.render('/view/main', {rate: rate });
+    });
+app.listen(3000, () => console.log('Execute Order 66'));
